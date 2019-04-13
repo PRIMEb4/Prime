@@ -1,0 +1,704 @@
+Calling target program-options parser
+Adding interface s1-eth1 as port 1
+[16:29:46.891] [bmv2] [D] [thread 8924] Adding interface s1-eth1 as port 1
+Adding interface s1-eth2 as port 2
+[16:29:46.917] [bmv2] [D] [thread 8924] Adding interface s1-eth2 as port 2
+Adding interface s1-eth3 as port 3
+[16:29:46.950] [bmv2] [D] [thread 8924] Adding interface s1-eth3 as port 3
+I0411 16:29:46.974541115    8924 server_builder.cc:247]      Synchronous server. Num CQs: 1, Min pollers: 1, Max Pollers: 2147483647, CQ timeout (msec): 1000
+Server listening on 0.0.0.0:50051
+Thrift server was started
+New connection
+P4Runtime SetForwardingPipelineConfig
+[16:30:18.073] [bmv2] [D] [thread 8996] Set default default entry for table 'MyIngress.shadow': NoAction - 
+[16:30:18.073] [bmv2] [D] [thread 8996] Set default default entry for table 'MyIngress.set_heavy_hitter_count_table': MyIngress.set_heavy_hitter_count - 
+[16:30:18.073] [bmv2] [D] [thread 8996] Set default default entry for table 'tbl_act': act - 
+[16:30:18.073] [bmv2] [D] [thread 8996] Set default default entry for table 'MyIngress.monitor': MyIngress.watch_ts - 
+[16:30:18.073] [bmv2] [D] [thread 8996] Set default default entry for table 'MyIngress.copy_to_cpu': MyIngress.do_copy_to_cpu - 
+[16:30:18.073] [bmv2] [D] [thread 8996] Set default default entry for table 'MyIngress.eth_exact': NoAction - 
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Processing packet received on port 1
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Parser 'parser': start
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Extracting header 'ethernet'
+P4Runtime Write
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.078] [bmv2] [T] [thread 9001] [0.0] [cxt 0] Bytes parsed: 14
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Parser 'parser': end
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.078] [bmv2] [T] [thread 9001] [0.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.078] [bmv2] [T] [thread 9001] [0.0] [cxt 0] Action NoAction
+[16:30:18.078] [bmv2] [T] [thread 9001] [0.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.078] [bmv2] [T] [thread 9001] [0.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000101
+
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.078] [bmv2] [T] [thread 9001] [0.0] [cxt 0] Action NoAction
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.078] [bmv2] [D] [thread 9001] [0.0] [cxt 0] Egress port is 0
+[16:30:18.078] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Processing packet received on port 2
+[16:30:18.078] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Parser 'parser': start
+[16:30:18.078] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.078] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.078] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.078] [bmv2] [T] [thread 9001] [1.0] [cxt 0] Bytes parsed: 14
+[16:30:18.078] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Parser 'parser': end
+[16:30:18.078] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.078] [bmv2] [T] [thread 9001] [1.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.078] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.078] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.079] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.079] [bmv2] [T] [thread 9001] [1.0] [cxt 0] Action NoAction
+[16:30:18.079] [bmv2] [T] [thread 9001] [1.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.079] [bmv2] [T] [thread 9001] [1.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.079] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000102
+
+[16:30:18.079] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.079] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.079] [bmv2] [T] [thread 9001] [1.0] [cxt 0] Action NoAction
+[16:30:18.079] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.079] [bmv2] [D] [thread 9001] [1.0] [cxt 0] Egress port is 0
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Processing packet received on port 3
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Parser 'parser': start
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.079] [bmv2] [T] [thread 9001] [2.0] [cxt 0] Bytes parsed: 14
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Parser 'parser': end
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.079] [bmv2] [T] [thread 9001] [2.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.079] [bmv2] [T] [thread 9001] [2.0] [cxt 0] Action NoAction
+[16:30:18.079] [bmv2] [T] [thread 9001] [2.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.079] [bmv2] [T] [thread 9001] [2.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000103
+
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.079] [bmv2] [T] [thread 9001] [2.0] [cxt 0] Action NoAction
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.079] [bmv2] [D] [thread 9001] [2.0] [cxt 0] Egress port is 0
+election_id {
+  low: 1
+}
+updates {
+  type: INSERT
+  entity {
+    table_entry {
+      table_id: 33570104
+      match {
+        field_id: 1
+        exact {
+          value: "\000\000\000\000\001\002"
+        }
+      }
+      action {
+        action {
+          action_id: 16817066
+          params {
+            param_id: 1
+            value: "\000\001"
+          }
+        }
+      }
+    }
+  }
+}
+[16:30:18.081] [bmv2] [D] [thread 8996] Entry 0 added to table 'MyIngress.eth_exact'
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Processing packet received on port 1
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Parser 'parser': start
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.081] [bmv2] [T] [thread 9001] [3.0] [cxt 0] Bytes parsed: 14
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Parser 'parser': end
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.081] [bmv2] [T] [thread 9001] [3.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.081] [bmv2] [T] [thread 9001] [3.0] [cxt 0] Action NoAction
+[16:30:18.081] [bmv2] [T] [thread 9001] [3.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.081] [bmv2] [T] [thread 9001] [3.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000101
+
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.081] [bmv2] [T] [thread 9001] [3.0] [cxt 0] Action NoAction
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.081] [bmv2] [D] [thread 9001] [3.0] [cxt 0] Egress port is 0
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Processing packet received on port 2
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Parser 'parser': start
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.081] [bmv2] [T] [thread 9001] [4.0] [cxt 0] Bytes parsed: 14
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Parser 'parser': end
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.081] [bmv2] [T] [thread 9001] [4.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.081] [bmv2] [T] [thread 9001] [4.0] [cxt 0] Action NoAction
+[16:30:18.081] [bmv2] [T] [thread 9001] [4.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.081] [bmv2] [T] [thread 9001] [4.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000102
+
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Table 'MyIngress.eth_exact': hit with handle 0
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Dumping entry 0
+Match key:
+* hdr.ethernet.srcAddr: EXACT     000000000102
+Action entry: MyIngress.simple_forward - 1,
+
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Action entry is MyIngress.simple_forward - 1,
+[16:30:18.081] [bmv2] [T] [thread 9001] [4.0] [cxt 0] Action MyIngress.simple_forward
+[16:30:18.081] [bmv2] [T] [thread 9001] [4.0] [cxt 0] advanced_tunnel.p4(207) Primitive standard_metadata.egress_spec = port
+[16:30:18.081] [bmv2] [D] [thread 8996] Dumping entry 0
+Match key:
+* hdr.ethernet.srcAddr: EXACT     000000000102
+Action entry: MyIngress.simple_forward - 1,
+
+[16:30:18.082] [bmv2] [D] [thread 9002] [0.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.082] [bmv2] [D] [thread 9002] [0.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.082] [bmv2] [D] [thread 9002] [0.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.082] [bmv2] [D] [thread 9002] [0.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.082] [bmv2] [D] [thread 9002] [0.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.082] [bmv2] [D] [thread 9006] [0.0] [cxt 0] Transmitting packet of size 90 out of port 0
+[16:30:18.082] [bmv2] [D] [thread 9002] [1.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.082] [bmv2] [D] [thread 9002] [1.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.082] [bmv2] [D] [thread 9002] [1.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.082] [bmv2] [D] [thread 9002] [1.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.082] [bmv2] [D] [thread 9002] [1.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.081] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.082] [bmv2] [D] [thread 9001] [4.0] [cxt 0] Egress port is 1
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Processing packet received on port 3
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Parser 'parser': start
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.082] [bmv2] [T] [thread 9001] [5.0] [cxt 0] Bytes parsed: 14
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Parser 'parser': end
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.082] [bmv2] [T] [thread 9001] [5.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.082] [bmv2] [T] [thread 9001] [5.0] [cxt 0] Action NoAction
+[16:30:18.082] [bmv2] [T] [thread 9001] [5.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.082] [bmv2] [T] [thread 9001] [5.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000103
+
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.082] [bmv2] [T] [thread 9001] [5.0] [cxt 0] Action NoAction
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.082] [bmv2] [D] [thread 9001] [5.0] [cxt 0] Egress port is 0
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Processing packet received on port 1
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Parser 'parser': start
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.082] [bmv2] [T] [thread 9001] [6.0] [cxt 0] Bytes parsed: 14
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Parser 'parser': end
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.082] [bmv2] [T] [thread 9001] [6.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.082] [bmv2] [T] [thread 9001] [6.0] [cxt 0] Action NoAction
+[16:30:18.082] [bmv2] [T] [thread 9001] [6.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.082] [bmv2] [T] [thread 9001] [6.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000101
+
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.082] [bmv2] [T] [thread 9001] [6.0] [cxt 0] Action NoAction
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.082] [bmv2] [D] [thread 9001] [6.0] [cxt 0] Egress port is 0
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Processing packet received on port 2
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Parser 'parser': start
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.082] [bmv2] [T] [thread 9001] [7.0] [cxt 0] Bytes parsed: 14
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Parser 'parser': end
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.082] [bmv2] [T] [thread 9001] [7.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.082] [bmv2] [T] [thread 9001] [7.0] [cxt 0] Action NoAction
+[16:30:18.082] [bmv2] [T] [thread 9001] [7.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.082] [bmv2] [T] [thread 9001] [7.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000102
+
+[16:30:18.082] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Table 'MyIngress.eth_exact': hit with handle 0
+[16:30:18.083] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Dumping entry 0
+Match key:
+* hdr.ethernet.srcAddr: EXACT     000000000102
+Action entry: MyIngress.simple_forward - 1,
+
+[16:30:18.083] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Action entry is MyIngress.simple_forward - 1,
+[16:30:18.083] [bmv2] [T] [thread 9001] [7.0] [cxt 0] Action MyIngress.simple_forward
+[16:30:18.083] [bmv2] [T] [thread 9001] [7.0] [cxt 0] advanced_tunnel.p4(207) Primitive standard_metadata.egress_spec = port
+[16:30:18.083] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.083] [bmv2] [D] [thread 9001] [7.0] [cxt 0] Egress port is 1
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Processing packet received on port 3
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Parser 'parser': start
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.083] [bmv2] [T] [thread 9001] [8.0] [cxt 0] Bytes parsed: 14
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Parser 'parser': end
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.083] [bmv2] [T] [thread 9001] [8.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.083] [bmv2] [T] [thread 9001] [8.0] [cxt 0] Action NoAction
+[16:30:18.083] [bmv2] [T] [thread 9001] [8.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.083] [bmv2] [T] [thread 9001] [8.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000103
+
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.083] [bmv2] [T] [thread 9001] [8.0] [cxt 0] Action NoAction
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.083] [bmv2] [D] [thread 9001] [8.0] [cxt 0] Egress port is 0
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Processing packet received on port 1
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Parser 'parser': start
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.083] [bmv2] [T] [thread 9001] [9.0] [cxt 0] Bytes parsed: 14
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Parser 'parser': end
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.083] [bmv2] [T] [thread 9001] [9.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.083] [bmv2] [T] [thread 9001] [9.0] [cxt 0] Action NoAction
+[16:30:18.083] [bmv2] [T] [thread 9001] [9.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.083] [bmv2] [T] [thread 9001] [9.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000101
+
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.083] [bmv2] [T] [thread 9001] [9.0] [cxt 0] Action NoAction
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.083] [bmv2] [D] [thread 9001] [9.0] [cxt 0] Egress port is 0
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Processing packet received on port 3
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Parser 'parser': start
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.083] [bmv2] [T] [thread 9001] [10.0] [cxt 0] Bytes parsed: 14
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Parser 'parser': end
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.083] [bmv2] [T] [thread 9001] [10.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.083] [bmv2] [T] [thread 9001] [10.0] [cxt 0] Action NoAction
+[16:30:18.083] [bmv2] [T] [thread 9001] [10.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.083] [bmv2] [T] [thread 9001] [10.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000103
+
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.083] [bmv2] [T] [thread 9001] [10.0] [cxt 0] Action NoAction
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.083] [bmv2] [D] [thread 9001] [10.0] [cxt 0] Egress port is 0
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Processing packet received on port 1
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Parser 'parser': start
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.083] [bmv2] [T] [thread 9001] [11.0] [cxt 0] Bytes parsed: 14
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Parser 'parser': end
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.083] [bmv2] [T] [thread 9001] [11.0] [cxt 0] Applying table 'MyIngress.shadow'
+P4Runtime Write
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.083] [bmv2] [T] [thread 9001] [11.0] [cxt 0] Action NoAction
+election_id {
+  low: 1
+}
+updates {
+  type: INSERT
+  entity {
+    table_entry {
+      table_id: 33570104
+      match {
+        field_id: 1
+        exact {
+          value: "\000\000\000\000\001\001"
+        }
+      }
+      action {
+        action {
+          action_id: 16817066
+          params {
+            param_id: 1
+            value: "\000\002"
+          }
+        }
+      }
+    }
+  }
+}
+[16:30:18.083] [bmv2] [T] [thread 9001] [11.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.083] [bmv2] [T] [thread 9001] [11.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000101
+
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.083] [bmv2] [T] [thread 9001] [11.0] [cxt 0] Action NoAction
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.083] [bmv2] [D] [thread 9001] [11.0] [cxt 0] Egress port is 0
+[16:30:18.083] [bmv2] [D] [thread 8996] Entry 1 added to table 'MyIngress.eth_exact'
+[16:30:18.083] [bmv2] [D] [thread 8996] Dumping entry 1
+Match key:
+* hdr.ethernet.srcAddr: EXACT     000000000101
+Action entry: MyIngress.simple_forward - 2,
+
+[16:30:18.084] [bmv2] [D] [thread 9006] [1.0] [cxt 0] Transmitting packet of size 110 out of port 0
+[16:30:18.084] [bmv2] [D] [thread 9003] [4.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.084] [bmv2] [D] [thread 9003] [4.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.084] [bmv2] [D] [thread 9003] [4.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.084] [bmv2] [D] [thread 9003] [4.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.084] [bmv2] [D] [thread 9003] [4.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.084] [bmv2] [D] [thread 9003] [7.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.084] [bmv2] [D] [thread 9003] [7.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.084] [bmv2] [D] [thread 9003] [7.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.084] [bmv2] [D] [thread 9003] [7.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.084] [bmv2] [D] [thread 9003] [7.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.084] [bmv2] [D] [thread 9006] [4.0] [cxt 0] Transmitting packet of size 110 out of port 1
+[16:30:18.084] [bmv2] [D] [thread 9006] [7.0] [cxt 0] Transmitting packet of size 110 out of port 1
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Processing packet received on port 3
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Parser 'parser': start
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.084] [bmv2] [T] [thread 9001] [12.0] [cxt 0] Bytes parsed: 14
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Parser 'parser': end
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.084] [bmv2] [T] [thread 9001] [12.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.084] [bmv2] [T] [thread 9001] [12.0] [cxt 0] Action NoAction
+[16:30:18.084] [bmv2] [T] [thread 9001] [12.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.084] [bmv2] [T] [thread 9001] [12.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000103
+
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.084] [bmv2] [T] [thread 9001] [12.0] [cxt 0] Action NoAction
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.084] [bmv2] [D] [thread 9001] [12.0] [cxt 0] Egress port is 0
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Processing packet received on port 1
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Parser 'parser': start
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.084] [bmv2] [T] [thread 9001] [13.0] [cxt 0] Bytes parsed: 14
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Parser 'parser': end
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.084] [bmv2] [T] [thread 9001] [13.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.084] [bmv2] [T] [thread 9001] [13.0] [cxt 0] Action NoAction
+[16:30:18.084] [bmv2] [T] [thread 9001] [13.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.084] [bmv2] [T] [thread 9001] [13.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000101
+
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Table 'MyIngress.eth_exact': hit with handle 1
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Dumping entry 1
+Match key:
+* hdr.ethernet.srcAddr: EXACT     000000000101
+Action entry: MyIngress.simple_forward - 2,
+
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Action entry is MyIngress.simple_forward - 2,
+[16:30:18.084] [bmv2] [T] [thread 9001] [13.0] [cxt 0] Action MyIngress.simple_forward
+[16:30:18.084] [bmv2] [T] [thread 9001] [13.0] [cxt 0] advanced_tunnel.p4(207) Primitive standard_metadata.egress_spec = port
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.084] [bmv2] [D] [thread 9001] [13.0] [cxt 0] Egress port is 2
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Processing packet received on port 3
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Parser 'parser': start
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.085] [bmv2] [T] [thread 9001] [14.0] [cxt 0] Bytes parsed: 14
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Parser 'parser': end
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.085] [bmv2] [T] [thread 9001] [14.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.085] [bmv2] [T] [thread 9001] [14.0] [cxt 0] Action NoAction
+[16:30:18.085] [bmv2] [T] [thread 9001] [14.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.085] [bmv2] [T] [thread 9001] [14.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000103
+
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.085] [bmv2] [T] [thread 9001] [14.0] [cxt 0] Action NoAction
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.085] [bmv2] [D] [thread 9001] [14.0] [cxt 0] Egress port is 0
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Processing packet received on port 1
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Parser 'parser': start
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.085] [bmv2] [T] [thread 9001] [15.0] [cxt 0] Bytes parsed: 14
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Parser 'parser': end
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.085] [bmv2] [T] [thread 9001] [15.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.085] [bmv2] [T] [thread 9001] [15.0] [cxt 0] Action NoAction
+[16:30:18.085] [bmv2] [T] [thread 9001] [15.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.085] [bmv2] [T] [thread 9001] [15.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000101
+
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Table 'MyIngress.eth_exact': hit with handle 1
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Dumping entry 1
+Match key:
+* hdr.ethernet.srcAddr: EXACT     000000000101
+Action entry: MyIngress.simple_forward - 2,
+
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Action entry is MyIngress.simple_forward - 2,
+[16:30:18.085] [bmv2] [T] [thread 9001] [15.0] [cxt 0] Action MyIngress.simple_forward
+[16:30:18.085] [bmv2] [T] [thread 9001] [15.0] [cxt 0] advanced_tunnel.p4(207) Primitive standard_metadata.egress_spec = port
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.085] [bmv2] [D] [thread 9001] [15.0] [cxt 0] Egress port is 2
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Processing packet received on port 3
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Parser 'parser': start
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Parser 'parser' entering state 'start'
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Extracting header 'ethernet'
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Parser state 'start': key is 86dd
+[16:30:18.085] [bmv2] [T] [thread 9001] [16.0] [cxt 0] Bytes parsed: 14
+P4Runtime Write
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Parser 'parser': end
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Pipeline 'ingress': start
+[16:30:18.085] [bmv2] [T] [thread 9001] [16.0] [cxt 0] Applying table 'MyIngress.shadow'
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Looking up key:
+* hdr.ipv4.dstAddr    : 00000000
+
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Table 'MyIngress.shadow': miss
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.085] [bmv2] [T] [thread 9001] [16.0] [cxt 0] Action NoAction
+election_id {
+  low: 1
+}
+updates {
+  type: INSERT
+  entity {
+    table_entry {
+      table_id: 33589632
+      match {
+        field_id: 1
+        lpm {
+          value: "\n\000\001\002"
+          prefix_len: 32
+        }
+      }
+      action {
+        action {
+          action_id: 16804817
+          params {
+            param_id: 1
+            value: "\000\001"
+          }
+        }
+      }
+    }
+  }
+}
+[16:30:18.085] [bmv2] [T] [thread 9001] [16.0] [cxt 0] advanced_tunnel.p4(272) Condition "meta.context_control == 1" (node_3) is false
+[16:30:18.085] [bmv2] [T] [thread 9001] [16.0] [cxt 0] Applying table 'MyIngress.eth_exact'
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Looking up key:
+* hdr.ethernet.srcAddr: 000000000103
+
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Table 'MyIngress.eth_exact': miss
+[16:30:18.085] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Action entry is NoAction - 
+[16:30:18.085] [bmv2] [D] [thread 8996] Entry 0 added to table 'MyIngress.shadow'
+[16:30:18.082] [bmv2] [D] [thread 9002] [2.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [2.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.086] [bmv2] [D] [thread 8996] Dumping entry 0
+Match key:
+* hdr.ipv4.dstAddr    : LPM       0a000102/32
+Action entry: MyIngress.set_chaining - 1,
+
+[16:30:18.086] [bmv2] [D] [thread 9002] [2.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [2.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.086] [bmv2] [D] [thread 9002] [2.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [3.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [3.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [3.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [3.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.086] [bmv2] [D] [thread 9002] [3.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [5.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [5.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [5.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [5.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.086] [bmv2] [D] [thread 9002] [5.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [6.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [6.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [6.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [6.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.086] [bmv2] [D] [thread 9002] [6.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [8.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [8.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [8.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [8.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.086] [bmv2] [D] [thread 9002] [8.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [9.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [9.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [9.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [9.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.086] [bmv2] [D] [thread 9002] [9.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [10.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [10.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [10.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [10.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.086] [bmv2] [D] [thread 9002] [10.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [11.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [11.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [11.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [11.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.086] [bmv2] [D] [thread 9002] [11.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [12.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [12.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [12.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [12.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.086] [bmv2] [D] [thread 9002] [12.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [14.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [14.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.086] [bmv2] [D] [thread 9002] [14.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.086] [bmv2] [D] [thread 9002] [14.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.086] [bmv2] [D] [thread 9002] [14.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.086] [bmv2] [D] [thread 9004] [13.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.087] [bmv2] [D] [thread 9004] [13.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.087] [bmv2] [D] [thread 9004] [13.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.087] [bmv2] [D] [thread 9004] [13.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.087] [bmv2] [D] [thread 9004] [13.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.087] [bmv2] [D] [thread 9004] [15.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.087] [bmv2] [D] [thread 9004] [15.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.087] [bmv2] [D] [thread 9004] [15.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.087] [bmv2] [D] [thread 9004] [15.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.087] [bmv2] [D] [thread 9004] [15.0] [cxt 0] Deparser 'deparser': end
+P4Runtime Write
+election_id {
+  low: 1
+}
+updates {
+  type: INSERT
+  entity {
+    table_entry {
+      table_id: 33589632
+      match {
+        field_id: 1
+        lpm {
+          value: "\n\000\001\001"
+          prefix_len: 32
+        }
+      }
+      action {
+        action {
+          action_id: 16804817
+          params {
+            param_id: 1
+            value: "\000\001"
+          }
+        }
+      }
+    }
+  }
+}
+[16:30:18.087] [bmv2] [D] [thread 8996] Entry 1 added to table 'MyIngress.shadow'
+[16:30:18.087] [bmv2] [D] [thread 8996] Dumping entry 1
+Match key:
+* hdr.ipv4.dstAddr    : LPM       0a000101/32
+Action entry: MyIngress.set_chaining - 1,
+
+[16:30:18.086] [bmv2] [D] [thread 9006] [2.0] [cxt 0] Transmitting packet of size 78 out of port 0
+[16:30:18.087] [bmv2] [D] [thread 9006] [3.0] [cxt 0] Transmitting packet of size 70 out of port 0
+[16:30:18.087] [bmv2] [D] [thread 9006] [5.0] [cxt 0] Transmitting packet of size 90 out of port 0
+[16:30:18.087] [bmv2] [D] [thread 9006] [6.0] [cxt 0] Transmitting packet of size 110 out of port 0
+[16:30:18.087] [bmv2] [D] [thread 9006] [8.0] [cxt 0] Transmitting packet of size 90 out of port 0
+[16:30:18.087] [bmv2] [D] [thread 9006] [9.0] [cxt 0] Transmitting packet of size 208 out of port 0
+[16:30:18.087] [bmv2] [D] [thread 9006] [10.0] [cxt 0] Transmitting packet of size 70 out of port 0
+[16:30:18.087] [bmv2] [D] [thread 9006] [11.0] [cxt 0] Transmitting packet of size 110 out of port 0
+[16:30:18.087] [bmv2] [D] [thread 9006] [12.0] [cxt 0] Transmitting packet of size 90 out of port 0
+[16:30:18.087] [bmv2] [D] [thread 9006] [14.0] [cxt 0] Transmitting packet of size 208 out of port 0
+[16:30:18.087] [bmv2] [D] [thread 9006] [13.0] [cxt 0] Transmitting packet of size 208 out of port 2
+[16:30:18.087] [bmv2] [D] [thread 9006] [15.0] [cxt 0] Transmitting packet of size 208 out of port 2
+Connection removed
+[16:30:18.085] [bmv2] [T] [thread 9001] [16.0] [cxt 0] Action NoAction
+[16:30:18.088] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Pipeline 'ingress': end
+[16:30:18.088] [bmv2] [D] [thread 9001] [16.0] [cxt 0] Egress port is 0
+[16:30:18.088] [bmv2] [D] [thread 9002] [16.0] [cxt 0] Pipeline 'egress': start
+[16:30:18.088] [bmv2] [D] [thread 9002] [16.0] [cxt 0] Pipeline 'egress': end
+[16:30:18.088] [bmv2] [D] [thread 9002] [16.0] [cxt 0] Deparser 'deparser': start
+[16:30:18.088] [bmv2] [D] [thread 9002] [16.0] [cxt 0] Deparsing header 'ethernet'
+[16:30:18.089] [bmv2] [D] [thread 9002] [16.0] [cxt 0] Deparser 'deparser': end
+[16:30:18.089] [bmv2] [D] [thread 9006] [16.0] [cxt 0] Transmitting packet of size 110 out of port 0
