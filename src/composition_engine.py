@@ -50,8 +50,8 @@ def p_statement_expr(p):
     cmd.write_composition_(p[1])
 
 def p_expression_binop(p):
-    '''expression : expression '+' expression
-                  | expression '>' expression'''
+    '''expression : expression '+' name
+                  | expression '>' name'''
 
     if p[2] == '+':
         p[0] = cmd.calc_parallel_(p[1],p[3])

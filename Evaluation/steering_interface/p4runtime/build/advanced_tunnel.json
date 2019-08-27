@@ -1,0 +1,3399 @@
+{
+  "program" : "advanced_tunnel.p4",
+  "__meta__" : {
+    "version" : [2, 7],
+    "compiler" : "https://github.com/p4lang/p4c"
+  },
+  "header_types" : [
+    {
+      "name" : "scalars_0",
+      "id" : 0,
+      "fields" : [
+        ["tmp", 32, false],
+        ["tmp_0", 32, false],
+        ["tmp_1", 32, false],
+        ["tmp_2", 32, false],
+        ["tmp_3", 64, false],
+        ["tmp_4", 32, false],
+        ["tmp_5", 32, false],
+        ["tmp_6", 32, false],
+        ["tmp_7", 32, false],
+        ["pred_0", 1, false],
+        ["cond_1", 1, false],
+        ["cond_2", 1, false],
+        ["cond_3", 1, false],
+        ["cond_4", 1, false],
+        ["cond_5", 1, false],
+        ["metadata.extension_id1", 9, false],
+        ["metadata.extension_id2", 9, false],
+        ["metadata.extension_id3", 9, false],
+        ["metadata.context_control", 1, false],
+        ["_padding_0", 6, false]
+      ]
+    },
+    {
+      "name" : "ethernet_t",
+      "id" : 1,
+      "fields" : [
+        ["dstAddr", 48, false],
+        ["srcAddr", 48, false],
+        ["etherType", 16, false]
+      ]
+    },
+    {
+      "name" : "ipv4_t",
+      "id" : 2,
+      "fields" : [
+        ["version", 4, false],
+        ["ihl", 4, false],
+        ["diffserv", 8, false],
+        ["totalLen", 16, false],
+        ["identification", 16, false],
+        ["flags", 3, false],
+        ["fragOffset", 13, false],
+        ["ttl", 8, false],
+        ["protocol", 8, false],
+        ["hdrChecksum", 16, false],
+        ["srcAddr", 32, false],
+        ["dstAddr", 32, false]
+      ]
+    },
+    {
+      "name" : "custom_metadata_t",
+      "id" : 3,
+      "fields" : [
+        ["nhop_ipv4", 32, false],
+        ["hash_val1", 16, false],
+        ["hash_val2", 16, false],
+        ["count_val1", 16, false],
+        ["count_val2", 16, false],
+        ["ts_val1", 64, false],
+        ["ts_val2", 64, false],
+        ["tresh", 16, false],
+        ["smalltresh", 16, false],
+        ["ts_aux", 64, false],
+        ["ts_modulo", 64, false],
+        ["ts_zone", 64, false],
+        ["ts_power", 64, false],
+        ["ts_aux1", 64, false],
+        ["ts_aux2", 64, false],
+        ["ts_aux3", 64, false],
+        ["ts_zone_sz", 64, false]
+      ]
+    },
+    {
+      "name" : "standard_metadata",
+      "id" : 4,
+      "fields" : [
+        ["ingress_port", 9, false],
+        ["egress_spec", 9, false],
+        ["egress_port", 9, false],
+        ["clone_spec", 32, false],
+        ["instance_type", 32, false],
+        ["drop", 1, false],
+        ["recirculate_port", 16, false],
+        ["packet_length", 32, false],
+        ["enq_timestamp", 32, false],
+        ["enq_qdepth", 19, false],
+        ["deq_timedelta", 32, false],
+        ["deq_qdepth", 19, false],
+        ["ingress_global_timestamp", 48, false],
+        ["egress_global_timestamp", 48, false],
+        ["lf_field_list", 32, false],
+        ["mcast_grp", 16, false],
+        ["resubmit_flag", 32, false],
+        ["egress_rid", 16, false],
+        ["checksum_error", 1, false],
+        ["recirculate_flag", 32, false],
+        ["_padding", 5, false]
+      ]
+    }
+  ],
+  "headers" : [
+    {
+      "name" : "scalars",
+      "id" : 0,
+      "header_type" : "scalars_0",
+      "metadata" : true,
+      "pi_omit" : true
+    },
+    {
+      "name" : "standard_metadata",
+      "id" : 1,
+      "header_type" : "standard_metadata",
+      "metadata" : true,
+      "pi_omit" : true
+    },
+    {
+      "name" : "ethernet",
+      "id" : 2,
+      "header_type" : "ethernet_t",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "ipv4",
+      "id" : 3,
+      "header_type" : "ipv4_t",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "userMetadata.custom_metadata",
+      "id" : 4,
+      "header_type" : "custom_metadata_t",
+      "metadata" : true,
+      "pi_omit" : true
+    }
+  ],
+  "header_stacks" : [],
+  "header_union_types" : [],
+  "header_unions" : [],
+  "header_union_stacks" : [],
+  "field_lists" : [
+    {
+      "id" : 1,
+      "name" : "fl",
+      "elements" : [
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "ingress_port"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_spec"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_port"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "clone_spec"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "instance_type"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "drop"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "recirculate_port"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "packet_length"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "enq_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "enq_qdepth"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "deq_timedelta"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "deq_qdepth"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "ingress_global_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_global_timestamp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "lf_field_list"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "mcast_grp"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "resubmit_flag"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "egress_rid"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "checksum_error"]
+        },
+        {
+          "type" : "field",
+          "value" : ["standard_metadata", "recirculate_flag"]
+        }
+      ]
+    }
+  ],
+  "errors" : [
+    ["NoError", 1],
+    ["PacketTooShort", 2],
+    ["NoMatch", 3],
+    ["StackOutOfBounds", 4],
+    ["HeaderTooShort", 5],
+    ["ParserTimeout", 6]
+  ],
+  "enums" : [],
+  "parsers" : [
+    {
+      "name" : "parser",
+      "id" : 0,
+      "init_state" : "start",
+      "parse_states" : [
+        {
+          "name" : "start",
+          "id" : 0,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "ethernet"
+                }
+              ],
+              "op" : "extract"
+            }
+          ],
+          "transitions" : [
+            {
+              "type" : "hexstr",
+              "value" : "0x0800",
+              "mask" : null,
+              "next_state" : "parse_ipv4"
+            },
+            {
+              "value" : "default",
+              "mask" : null,
+              "next_state" : null
+            }
+          ],
+          "transition_key" : [
+            {
+              "type" : "field",
+              "value" : ["ethernet", "etherType"]
+            }
+          ]
+        },
+        {
+          "name" : "parse_ipv4",
+          "id" : 1,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "ipv4"
+                }
+              ],
+              "op" : "extract"
+            }
+          ],
+          "transitions" : [
+            {
+              "value" : "default",
+              "mask" : null,
+              "next_state" : null
+            }
+          ],
+          "transition_key" : []
+        }
+      ]
+    }
+  ],
+  "parse_vsets" : [],
+  "deparsers" : [
+    {
+      "name" : "deparser",
+      "id" : 0,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 321,
+        "column" : 8,
+        "source_fragment" : "MyDeparser"
+      },
+      "order" : ["ethernet", "ipv4"]
+    }
+  ],
+  "meter_arrays" : [],
+  "counter_arrays" : [],
+  "register_arrays" : [
+    {
+      "name" : "MyIngress.heavy_hitter_counter1",
+      "id" : 0,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 123,
+        "column" : 29,
+        "source_fragment" : "heavy_hitter_counter1"
+      },
+      "size" : 16,
+      "bitwidth" : 16
+    },
+    {
+      "name" : "MyIngress.heavy_hitter_counter2",
+      "id" : 1,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 124,
+        "column" : 29,
+        "source_fragment" : "heavy_hitter_counter2"
+      },
+      "size" : 16,
+      "bitwidth" : 16
+    },
+    {
+      "name" : "MyIngress.smalltresh",
+      "id" : 2,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 125,
+        "column" : 25,
+        "source_fragment" : "smalltresh"
+      },
+      "size" : 1,
+      "bitwidth" : 16
+    },
+    {
+      "name" : "MyIngress.tresh",
+      "id" : 3,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 127,
+        "column" : 25,
+        "source_fragment" : "tresh"
+      },
+      "size" : 1,
+      "bitwidth" : 16
+    },
+    {
+      "name" : "MyIngress.ts",
+      "id" : 4,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 128,
+        "column" : 28,
+        "source_fragment" : "ts"
+      },
+      "size" : 1024,
+      "bitwidth" : 64
+    },
+    {
+      "name" : "MyIngress.ts_sender",
+      "id" : 5,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 129,
+        "column" : 27,
+        "source_fragment" : "ts_sender"
+      },
+      "size" : 256,
+      "bitwidth" : 64
+    },
+    {
+      "name" : "MyIngress.ts_recver",
+      "id" : 6,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 130,
+        "column" : 27,
+        "source_fragment" : "ts_recver"
+      },
+      "size" : 256,
+      "bitwidth" : 64
+    },
+    {
+      "name" : "MyIngress.ts_valid",
+      "id" : 7,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 131,
+        "column" : 26,
+        "source_fragment" : "ts_valid"
+      },
+      "size" : 256,
+      "bitwidth" : 1
+    },
+    {
+      "name" : "MyIngress.Whois",
+      "id" : 8,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 134,
+        "column" : 29,
+        "source_fragment" : "Whois"
+      },
+      "size" : 16,
+      "bitwidth" : 32
+    },
+    {
+      "name" : "MyIngress.flowMax",
+      "id" : 9,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 135,
+        "column" : 29,
+        "source_fragment" : "flowMax"
+      },
+      "size" : 16,
+      "bitwidth" : 16
+    },
+    {
+      "name" : "MyIngress.flowMin",
+      "id" : 10,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 136,
+        "column" : 29,
+        "source_fragment" : "flowMin"
+      },
+      "size" : 16,
+      "bitwidth" : 16
+    }
+  ],
+  "calculations" : [
+    {
+      "name" : "calc",
+      "id" : 0,
+      "algo" : "csum16",
+      "input" : [
+        {
+          "type" : "field",
+          "value" : ["ipv4", "dstAddr"]
+        }
+      ]
+    }
+  ],
+  "learn_lists" : [],
+  "actions" : [
+    {
+      "name" : "NoAction",
+      "id" : 0,
+      "runtime_data" : [],
+      "primitives" : []
+    },
+    {
+      "name" : "NoAction",
+      "id" : 1,
+      "runtime_data" : [],
+      "primitives" : []
+    },
+    {
+      "name" : "MyIngress.drop",
+      "id" : 2,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "drop",
+          "parameters" : [],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 120,
+            "column" : 8,
+            "source_fragment" : "mark_to_drop()"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyIngress.do_copy_to_cpu",
+      "id" : 3,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "clone_ingress_pkt_to_egress",
+          "parameters" : [
+            {
+              "type" : "hexstr",
+              "value" : "0x000000fa"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "MyIngress.watch_ts",
+      "id" : 4,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_aux"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["standard_metadata", "ingress_global_timestamp"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffffffffffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 143,
+            "column" : 6,
+            "source_fragment" : "meta.custom_metadata.ts_aux= (bit<64>) standard_metadata.ingress_global_timestamp"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_zone"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["ipv4", "dstAddr"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffffffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0x000000000000000f"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 145,
+            "column" : 6,
+            "source_fragment" : "meta.custom_metadata.ts_zone= (bit<64>)hdr.ipv4.dstAddr & 0x000000000000000F"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["ipv4", "dstAddr"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x000000000000000f"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_aux1"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.ts_sender"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 146,
+            "column" : 6,
+            "source_fragment" : "ts_sender.read(meta.custom_metadata.ts_aux1, (bit<32>) meta.custom_metadata.ts_zone)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_0"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "ts_zone"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_aux2"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.ts_recver"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_0"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 147,
+            "column" : 6,
+            "source_fragment" : "ts_recver.read(meta.custom_metadata.ts_aux2, (bit<32>) meta.custom_metadata.ts_zone)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_power"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : ">>",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_aux"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x8"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffffffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "ts_power"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "or",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "or",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "and",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "==",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["userMetadata.custom_metadata", "ts_aux1"]
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "&",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["ipv4", "srcAddr"]
+                                      },
+                                      "right" : {
+                                        "type" : "hexstr",
+                                        "value" : "0xffffffffffffffff"
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "==",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["userMetadata.custom_metadata", "ts_aux2"]
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "&",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["ipv4", "dstAddr"]
+                                      },
+                                      "right" : {
+                                        "type" : "hexstr",
+                                        "value" : "0xffffffffffffffff"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "==",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["userMetadata.custom_metadata", "ts_aux1"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x0000000000000000"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "==",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_aux2"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x0000000000000000"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 151,
+            "column" : 8,
+            "source_fragment" : "meta.custom_metadata.ts_power="
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_modulo"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["userMetadata.custom_metadata", "ts_aux"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000000000000ff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "ts_modulo"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "or",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "or",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "and",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "==",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["userMetadata.custom_metadata", "ts_aux1"]
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "&",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["ipv4", "srcAddr"]
+                                      },
+                                      "right" : {
+                                        "type" : "hexstr",
+                                        "value" : "0xffffffffffffffff"
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "==",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["userMetadata.custom_metadata", "ts_aux2"]
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "&",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["ipv4", "dstAddr"]
+                                      },
+                                      "right" : {
+                                        "type" : "hexstr",
+                                        "value" : "0xffffffffffffffff"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "==",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["userMetadata.custom_metadata", "ts_aux1"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x0000000000000000"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "==",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_aux2"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x0000000000000000"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 152,
+            "column" : 8,
+            "source_fragment" : "meta.custom_metadata.ts_modulo="
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "pred_0"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "and",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "or",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "or",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "and",
+                                  "left" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "==",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["userMetadata.custom_metadata", "ts_aux1"]
+                                      },
+                                      "right" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "&",
+                                          "left" : {
+                                            "type" : "field",
+                                            "value" : ["ipv4", "srcAddr"]
+                                          },
+                                          "right" : {
+                                            "type" : "hexstr",
+                                            "value" : "0xffffffffffffffff"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "==",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["userMetadata.custom_metadata", "ts_aux2"]
+                                      },
+                                      "right" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "&",
+                                          "left" : {
+                                            "type" : "field",
+                                            "value" : ["ipv4", "dstAddr"]
+                                          },
+                                          "right" : {
+                                            "type" : "hexstr",
+                                            "value" : "0xffffffffffffffff"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "==",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["userMetadata.custom_metadata", "ts_aux1"]
+                                  },
+                                  "right" : {
+                                    "type" : "hexstr",
+                                    "value" : "0x0000000000000000"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "==",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["userMetadata.custom_metadata", "ts_aux2"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x0000000000000000"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "<",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_power"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x0000000000000005"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_1"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "==",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["userMetadata.custom_metadata", "ts_power"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0000000000000000"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_power"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "hexstr",
+                    "value" : "0x0000000000000001"
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "ts_power"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "and",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "and",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "or",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "or",
+                                  "left" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "and",
+                                      "left" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "==",
+                                          "left" : {
+                                            "type" : "field",
+                                            "value" : ["userMetadata.custom_metadata", "ts_aux1"]
+                                          },
+                                          "right" : {
+                                            "type" : "expression",
+                                            "value" : {
+                                              "op" : "&",
+                                              "left" : {
+                                                "type" : "field",
+                                                "value" : ["ipv4", "srcAddr"]
+                                              },
+                                              "right" : {
+                                                "type" : "hexstr",
+                                                "value" : "0xffffffffffffffff"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "right" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "==",
+                                          "left" : {
+                                            "type" : "field",
+                                            "value" : ["userMetadata.custom_metadata", "ts_aux2"]
+                                          },
+                                          "right" : {
+                                            "type" : "expression",
+                                            "value" : {
+                                              "op" : "&",
+                                              "left" : {
+                                                "type" : "field",
+                                                "value" : ["ipv4", "dstAddr"]
+                                              },
+                                              "right" : {
+                                                "type" : "hexstr",
+                                                "value" : "0xffffffffffffffff"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "==",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["userMetadata.custom_metadata", "ts_aux1"]
+                                      },
+                                      "right" : {
+                                        "type" : "hexstr",
+                                        "value" : "0x0000000000000000"
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "==",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["userMetadata.custom_metadata", "ts_aux2"]
+                                  },
+                                  "right" : {
+                                    "type" : "hexstr",
+                                    "value" : "0x0000000000000000"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "<",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["userMetadata.custom_metadata", "ts_power"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x0000000000000005"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "==",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_power"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x0000000000000000"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 156,
+            "column" : 12,
+            "source_fragment" : "meta.custom_metadata.ts_power="
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_1"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "not",
+                      "left" : null,
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "d2b",
+                          "left" : null,
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "cond_1"]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_2"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "==",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["userMetadata.custom_metadata", "ts_power"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0000000000000001"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_power"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "hexstr",
+                    "value" : "0x0000000000000002"
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "ts_power"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "and",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "and",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "d2b",
+                              "left" : null,
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "pred_0"]
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "d2b",
+                              "left" : null,
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "cond_1"]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "==",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_power"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x0000000000000001"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 159,
+            "column" : 14,
+            "source_fragment" : "meta.custom_metadata.ts_power="
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_2"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "not",
+                      "left" : null,
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "d2b",
+                          "left" : null,
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "cond_2"]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_3"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "==",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["userMetadata.custom_metadata", "ts_power"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0000000000000002"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_power"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "hexstr",
+                    "value" : "0x0000000000000004"
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "ts_power"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "and",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "and",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "and",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "d2b",
+                                  "left" : null,
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "pred_0"]
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "d2b",
+                                  "left" : null,
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "cond_1"]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "d2b",
+                              "left" : null,
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "cond_2"]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "==",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_power"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x0000000000000002"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 162,
+            "column" : 16,
+            "source_fragment" : "meta.custom_metadata.ts_power="
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_3"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "not",
+                      "left" : null,
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "d2b",
+                          "left" : null,
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "cond_3"]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_4"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "==",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["userMetadata.custom_metadata", "ts_power"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0000000000000003"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_power"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "hexstr",
+                    "value" : "0x0000000000000008"
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "ts_power"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "and",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "and",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "and",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "and",
+                                  "left" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "d2b",
+                                      "left" : null,
+                                      "right" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "pred_0"]
+                                      }
+                                    }
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "d2b",
+                                      "left" : null,
+                                      "right" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "cond_1"]
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "d2b",
+                                  "left" : null,
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "cond_2"]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "d2b",
+                              "left" : null,
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "cond_3"]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "==",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_power"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x0000000000000003"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 165,
+            "column" : 18,
+            "source_fragment" : "meta.custom_metadata.ts_power="
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_4"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "not",
+                      "left" : null,
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "d2b",
+                          "left" : null,
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "cond_4"]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_5"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "==",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["userMetadata.custom_metadata", "ts_power"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0000000000000004"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_power"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "hexstr",
+                    "value" : "0x0000000000000010"
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "ts_power"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "and",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "and",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "and",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "and",
+                                  "left" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "and",
+                                      "left" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "d2b",
+                                          "left" : null,
+                                          "right" : {
+                                            "type" : "field",
+                                            "value" : ["scalars", "pred_0"]
+                                          }
+                                        }
+                                      },
+                                      "right" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "d2b",
+                                          "left" : null,
+                                          "right" : {
+                                            "type" : "field",
+                                            "value" : ["scalars", "cond_1"]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "d2b",
+                                      "left" : null,
+                                      "right" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "cond_2"]
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "d2b",
+                                  "left" : null,
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "cond_3"]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "d2b",
+                              "left" : null,
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "cond_4"]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "==",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_power"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x0000000000000004"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 168,
+            "column" : 20,
+            "source_fragment" : "meta.custom_metadata.ts_power="
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_5"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "not",
+                      "left" : null,
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "d2b",
+                          "left" : null,
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "cond_5"]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_power"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "hexstr",
+                    "value" : "0x0000000000000020"
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "ts_power"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "and",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "and",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "and",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "and",
+                                  "left" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "and",
+                                      "left" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "and",
+                                          "left" : {
+                                            "type" : "expression",
+                                            "value" : {
+                                              "op" : "d2b",
+                                              "left" : null,
+                                              "right" : {
+                                                "type" : "field",
+                                                "value" : ["scalars", "pred_0"]
+                                              }
+                                            }
+                                          },
+                                          "right" : {
+                                            "type" : "expression",
+                                            "value" : {
+                                              "op" : "d2b",
+                                              "left" : null,
+                                              "right" : {
+                                                "type" : "field",
+                                                "value" : ["scalars", "cond_1"]
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "right" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "d2b",
+                                          "left" : null,
+                                          "right" : {
+                                            "type" : "field",
+                                            "value" : ["scalars", "cond_2"]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "d2b",
+                                      "left" : null,
+                                      "right" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "cond_3"]
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "d2b",
+                                  "left" : null,
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "cond_4"]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "d2b",
+                              "left" : null,
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "cond_5"]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "==",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_power"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x0000000000000005"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 171,
+            "column" : 20,
+            "source_fragment" : "meta.custom_metadata.ts_power="
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_zone"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffffffffffff"
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "ts_zone"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "not",
+                      "left" : null,
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "or",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "or",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "and",
+                                  "left" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "==",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["userMetadata.custom_metadata", "ts_aux1"]
+                                      },
+                                      "right" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "&",
+                                          "left" : {
+                                            "type" : "field",
+                                            "value" : ["ipv4", "srcAddr"]
+                                          },
+                                          "right" : {
+                                            "type" : "hexstr",
+                                            "value" : "0xffffffffffffffff"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "==",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["userMetadata.custom_metadata", "ts_aux2"]
+                                      },
+                                      "right" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "&",
+                                          "left" : {
+                                            "type" : "field",
+                                            "value" : ["ipv4", "dstAddr"]
+                                          },
+                                          "right" : {
+                                            "type" : "hexstr",
+                                            "value" : "0xffffffffffffffff"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "==",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["userMetadata.custom_metadata", "ts_aux1"]
+                                  },
+                                  "right" : {
+                                    "type" : "hexstr",
+                                    "value" : "0x0000000000000000"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "==",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["userMetadata.custom_metadata", "ts_aux2"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x0000000000000000"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 179,
+            "column" : 8,
+            "source_fragment" : "meta.custom_metadata.ts_zone="
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_1"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_zone"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_modulo"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffff"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "ts_val1"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.ts"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_1"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 181,
+            "column" : 6,
+            "source_fragment" : "ts.read(meta.custom_metadata.ts_val1, (bit<32>) meta.custom_metadata.ts_zone + (bit<32>)meta.custom_metadata.ts_modulo)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_2"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_zone"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["userMetadata.custom_metadata", "ts_modulo"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffff"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_3"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["userMetadata.custom_metadata", "ts_val1"]
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["userMetadata.custom_metadata", "ts_power"]
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffffffffffff"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.ts"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_2"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_3"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 183,
+            "column" : 6,
+            "source_fragment" : "ts.write( (bit<32>)meta.custom_metadata.ts_zone + (bit<32>)meta.custom_metadata.ts_modulo, meta.custom_metadata.ts_val1 + meta.custom_metadata.ts_power)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyIngress.set_heavy_hitter_count",
+      "id" : 5,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "modify_field_with_hash_based_offset",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "hash_val1"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0000"
+            },
+            {
+              "type" : "calculation",
+              "value" : "calc"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000010"
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 192,
+            "column" : 8,
+            "source_fragment" : "hash(meta.custom_metadata.hash_val1, HashAlgorithm.csum16, (bit<16>)0, { hdr.ipv4.dstAddr }, (bit<32>)16)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_4"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "hash_val1"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "count_val1"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.heavy_hitter_counter1"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_4"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 193,
+            "column" : 8,
+            "source_fragment" : "heavy_hitter_counter1.read(meta.custom_metadata.count_val1, (bit<32>)meta.custom_metadata.hash_val1)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "count_val1"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["userMetadata.custom_metadata", "count_val1"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0001"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 195,
+            "column" : 8,
+            "source_fragment" : "meta.custom_metadata.count_val1 = meta.custom_metadata.count_val1 + 16w1"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_5"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "hash_val1"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.heavy_hitter_counter1"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_5"]
+            },
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "count_val1"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 197,
+            "column" : 8,
+            "source_fragment" : "heavy_hitter_counter1.write((bit<32>)meta.custom_metadata.hash_val1, (bit<16>)meta.custom_metadata.count_val1)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_6"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "hash_val1"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "count_val2"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.heavy_hitter_counter2"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_6"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 199,
+            "column" : 8,
+            "source_fragment" : "heavy_hitter_counter2.read(meta.custom_metadata.count_val2, (bit<32>)meta.custom_metadata.hash_val1)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "count_val2"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["userMetadata.custom_metadata", "count_val2"]
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["ipv4", "totalLen"]
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 201,
+            "column" : 8,
+            "source_fragment" : "meta.custom_metadata.count_val2=meta.custom_metadata.count_val2+hdr.ipv4.totalLen"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_7"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["userMetadata.custom_metadata", "hash_val1"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.heavy_hitter_counter2"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_7"]
+            },
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "count_val2"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 202,
+            "column" : 8,
+            "source_fragment" : "heavy_hitter_counter2.write((bit<32>)meta.custom_metadata.hash_val1, (bit<16>)meta.custom_metadata.count_val2)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyIngress.simple_forward",
+      "id" : 6,
+      "runtime_data" : [
+        {
+          "name" : "port",
+          "bitwidth" : 9
+        }
+      ],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["standard_metadata", "egress_spec"]
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 0
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 207,
+            "column" : 8,
+            "source_fragment" : "standard_metadata.egress_spec = port"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyIngress.set_chaining",
+      "id" : 7,
+      "runtime_data" : [
+        {
+          "name" : "prog",
+          "bitwidth" : 9
+        }
+      ],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata.context_control"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x01"
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 211,
+            "column" : 9,
+            "source_fragment" : "meta.context_control = 1"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "metadata.extension_id1"]
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 0
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 212,
+            "column" : 9,
+            "source_fragment" : "meta.extension_id1 = prog"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "act",
+      "id" : 8,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "smalltresh"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.smalltresh"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 282,
+            "column" : 16,
+            "source_fragment" : "smalltresh.read(meta.custom_metadata.smalltresh,0)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["userMetadata.custom_metadata", "tresh"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "MyIngress.tresh"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 284,
+            "column" : 16,
+            "source_fragment" : "tresh.read(meta.custom_metadata.tresh,0)"
+          }
+        }
+      ]
+    }
+  ],
+  "pipelines" : [
+    {
+      "name" : "ingress",
+      "id" : 0,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 115,
+        "column" : 8,
+        "source_fragment" : "MyIngress"
+      },
+      "init_table" : "MyIngress.shadow",
+      "tables" : [
+        {
+          "name" : "MyIngress.shadow",
+          "id" : 0,
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 242,
+            "column" : 10,
+            "source_fragment" : "shadow"
+          },
+          "key" : [
+            {
+              "match_type" : "lpm",
+              "name" : "hdr.ipv4.dstAddr",
+              "target" : ["ipv4", "dstAddr"],
+              "mask" : null
+            }
+          ],
+          "match_type" : "lpm",
+          "type" : "simple",
+          "max_size" : 1148576,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [7, 0],
+          "actions" : ["MyIngress.set_chaining", "NoAction"],
+          "base_default_next" : "node_3",
+          "next_tables" : {
+            "MyIngress.set_chaining" : "node_3",
+            "NoAction" : "node_3"
+          },
+          "default_entry" : {
+            "action_id" : 0,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        },
+        {
+          "name" : "MyIngress.set_heavy_hitter_count_table",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 215,
+            "column" : 10,
+            "source_fragment" : "set_heavy_hitter_count_table"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [5],
+          "actions" : ["MyIngress.set_heavy_hitter_count"],
+          "base_default_next" : "tbl_act",
+          "next_tables" : {
+            "MyIngress.set_heavy_hitter_count" : "tbl_act"
+          },
+          "default_entry" : {
+            "action_id" : 5,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        },
+        {
+          "name" : "tbl_act",
+          "id" : 2,
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [8],
+          "actions" : ["act"],
+          "base_default_next" : "node_8",
+          "next_tables" : {
+            "act" : "node_8"
+          },
+          "default_entry" : {
+            "action_id" : 8,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "MyIngress.monitor",
+          "id" : 3,
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 232,
+            "column" : 10,
+            "source_fragment" : "monitor"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [4],
+          "actions" : ["MyIngress.watch_ts"],
+          "base_default_next" : "node_10",
+          "next_tables" : {
+            "MyIngress.watch_ts" : "node_10"
+          },
+          "default_entry" : {
+            "action_id" : 4,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        },
+        {
+          "name" : "MyIngress.copy_to_cpu",
+          "id" : 4,
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 224,
+            "column" : 11,
+            "source_fragment" : "copy_to_cpu"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [3],
+          "actions" : ["MyIngress.do_copy_to_cpu"],
+          "base_default_next" : "MyIngress.eth_exact",
+          "next_tables" : {
+            "MyIngress.do_copy_to_cpu" : "MyIngress.eth_exact"
+          },
+          "default_entry" : {
+            "action_id" : 3,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        },
+        {
+          "name" : "MyIngress.eth_exact",
+          "id" : 5,
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 254,
+            "column" : 10,
+            "source_fragment" : "eth_exact"
+          },
+          "key" : [
+            {
+              "match_type" : "exact",
+              "name" : "hdr.ethernet.srcAddr",
+              "target" : ["ethernet", "srcAddr"],
+              "mask" : null
+            }
+          ],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [6, 1, 2],
+          "actions" : ["MyIngress.simple_forward", "NoAction", "MyIngress.drop"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "MyIngress.simple_forward" : null,
+            "NoAction" : null,
+            "MyIngress.drop" : null
+          },
+          "default_entry" : {
+            "action_id" : 1,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        }
+      ],
+      "action_profiles" : [],
+      "conditionals" : [
+        {
+          "name" : "node_3",
+          "id" : 0,
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 272,
+            "column" : 11,
+            "source_fragment" : "meta.context_control == 1"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["scalars", "metadata.context_control"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x01"
+              }
+            }
+          },
+          "true_next" : "node_4",
+          "false_next" : "MyIngress.eth_exact"
+        },
+        {
+          "name" : "node_4",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 274,
+            "column" : 13,
+            "source_fragment" : "meta.extension_id1 == 1"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["scalars", "metadata.extension_id1"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x0001"
+              }
+            }
+          },
+          "true_next" : "node_5",
+          "false_next" : "MyIngress.eth_exact"
+        },
+        {
+          "name" : "node_5",
+          "id" : 2,
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 278,
+            "column" : 15,
+            "source_fragment" : "hdr.ipv4.isValid()"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "d2b",
+              "left" : null,
+              "right" : {
+                "type" : "field",
+                "value" : ["ipv4", "$valid$"]
+              }
+            }
+          },
+          "true_next" : "MyIngress.set_heavy_hitter_count_table",
+          "false_next" : "MyIngress.eth_exact"
+        },
+        {
+          "name" : "node_8",
+          "id" : 3,
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 286,
+            "column" : 20,
+            "source_fragment" : "meta.custom_metadata.count_val1 > meta.custom_metadata.smalltresh"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : ">",
+              "left" : {
+                "type" : "field",
+                "value" : ["userMetadata.custom_metadata", "count_val1"]
+              },
+              "right" : {
+                "type" : "field",
+                "value" : ["userMetadata.custom_metadata", "smalltresh"]
+              }
+            }
+          },
+          "true_next" : "MyIngress.monitor",
+          "false_next" : "node_10"
+        },
+        {
+          "name" : "node_10",
+          "id" : 4,
+          "source_info" : {
+            "filename" : "advanced_tunnel.p4",
+            "line" : 289,
+            "column" : 20,
+            "source_fragment" : "meta.custom_metadata.count_val1 > meta.custom_metadata.tresh"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : ">",
+              "left" : {
+                "type" : "field",
+                "value" : ["userMetadata.custom_metadata", "count_val1"]
+              },
+              "right" : {
+                "type" : "field",
+                "value" : ["userMetadata.custom_metadata", "tresh"]
+              }
+            }
+          },
+          "true_next" : "MyIngress.copy_to_cpu",
+          "false_next" : "MyIngress.eth_exact"
+        }
+      ]
+    },
+    {
+      "name" : "egress",
+      "id" : 1,
+      "source_info" : {
+        "filename" : "advanced_tunnel.p4",
+        "line" : 303,
+        "column" : 8,
+        "source_fragment" : "MyEgress"
+      },
+      "init_table" : null,
+      "tables" : [],
+      "action_profiles" : [],
+      "conditionals" : []
+    }
+  ],
+  "checksums" : [],
+  "force_arith" : [],
+  "extern_instances" : [],
+  "field_aliases" : [
+    [
+      "queueing_metadata.enq_timestamp",
+      ["standard_metadata", "enq_timestamp"]
+    ],
+    [
+      "queueing_metadata.enq_qdepth",
+      ["standard_metadata", "enq_qdepth"]
+    ],
+    [
+      "queueing_metadata.deq_timedelta",
+      ["standard_metadata", "deq_timedelta"]
+    ],
+    [
+      "queueing_metadata.deq_qdepth",
+      ["standard_metadata", "deq_qdepth"]
+    ],
+    [
+      "intrinsic_metadata.ingress_global_timestamp",
+      ["standard_metadata", "ingress_global_timestamp"]
+    ],
+    [
+      "intrinsic_metadata.egress_global_timestamp",
+      ["standard_metadata", "egress_global_timestamp"]
+    ],
+    [
+      "intrinsic_metadata.lf_field_list",
+      ["standard_metadata", "lf_field_list"]
+    ],
+    [
+      "intrinsic_metadata.mcast_grp",
+      ["standard_metadata", "mcast_grp"]
+    ],
+    [
+      "intrinsic_metadata.resubmit_flag",
+      ["standard_metadata", "resubmit_flag"]
+    ],
+    [
+      "intrinsic_metadata.egress_rid",
+      ["standard_metadata", "egress_rid"]
+    ],
+    [
+      "intrinsic_metadata.recirculate_flag",
+      ["standard_metadata", "recirculate_flag"]
+    ]
+  ]
+}
