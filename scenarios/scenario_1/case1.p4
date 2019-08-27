@@ -64,7 +64,7 @@ header ipv4_t {
 }
 
 struct metadata {
-    custom_metadata_t        custom_metadata_1;
+    custom_metadata_t_1        custom_metadata_1;
     custom_metadata_t        custom_metadata;
     standard_metadata_t      aux;
     egressSpec_t             port_aux;
@@ -118,11 +118,6 @@ control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
 control MyIngress(inout headers hdr,
                   inout metadata meta,
                   inout standard_metadata_t standard_metadata) {
-
-
-    action drop() {
-        mark_to_drop();
-    }
 
     register<bit<16>>(32w16) heavy_hitter_counter1;
     register<bit<16>>(32w16) heavy_hitter_counter2;
@@ -252,19 +247,8 @@ control MyIngress(inout headers hdr,
 	       size = 1024;
      }
 
-    table ipv4_lpm {
-        key = {
-            hdr.ipv4.dstAddr: lpm;
-        }
-        actions = {
-            ipv4_forward;
-            drop;
-            NoAction;
-        }
-        size = 1024;
-    }
 
-    table ipv4_lpm_2 {
+    table ipv4_lpm {
         key = {
             hdr.ipv4.dstAddr: lpm;
         }
@@ -303,7 +287,7 @@ control MyIngress(inout headers hdr,
      
         if (meta.custom_metadata.next_function == 2){
             if (hdr.ipv4.isValid()) {
-                ipv4_lpm_2.apply();
+                ipv4_lpm.apply();
             }
         }
     }
