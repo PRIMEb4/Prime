@@ -1,251 +1,218 @@
-/* Copyright 2013-present Barefoot Networks, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+#include <core.p4>
+#include <v1model.p4>
 
-header_type ethernet_t {
-    fields {
-        dstAddr : 48;
-        srcAddr : 48;
-        etherType : 16;
+struct ingress_metadata_t {
+    bit<32> flow_ipg;
+    bit<13> flowlet_map_index;
+    bit<16> flowlet_id;
+    bit<32> flowlet_lasttime;
+    bit<14> ecmp_offset;
+    bit<32> nhop_ipv4;
+}
+
+struct intrinsic_metadata_t {
+    bit<32> deq_timedelta;
+    bit<32> enq_timestamp;
+    bit<32> ingress_global_timestamp;
+}
+
+header ethernet_t {
+    bit<48> dstAddr;
+    bit<48> srcAddr;
+    bit<16> etherType;
+}
+
+header ipv4_t {
+    bit<4>  version;
+    bit<4>  ihl;
+    bit<8>  diffserv;
+    bit<16> totalLen;
+    bit<16> identification;
+    bit<3>  flags;
+    bit<13> fragOffset;
+    bit<8>  ttl;
+    bit<8>  protocol;
+    bit<16> hdrChecksum;
+    bit<32> srcAddr;
+    bit<32> dstAddr;
+}
+
+header tcp_t {
+    bit<16> srcPort;
+    bit<16> dstPort;
+    bit<32> seqNo;
+    bit<32> ackNo;
+    bit<4>  dataOffset;
+    bit<3>  res;
+    bit<3>  ecn;
+    bit<6>  ctrl;
+    bit<16> window;
+    bit<16> checksum;
+    bit<16> urgentPtr;
+}
+
+struct metadata {
+    @name(".ingress_metadata") 
+    ingress_metadata_t   ingress_metadata;
+    @name(".intrinsic_metadata") 
+    intrinsic_metadata_t intrinsic_metadata;
+}
+
+struct headers {
+    @name(".ethernet") 
+    ethernet_t ethernet;
+    @name(".ipv4") 
+    ipv4_t     ipv4;
+    @name(".tcp") 
+    tcp_t      tcp;
+}
+
+parser ParserImpl(packet_in packet, out headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+    @name(".parse_ethernet") state parse_ethernet {
+        packet.extract(hdr.ethernet);
+        transition select(hdr.ethernet.etherType) {
+            16w0x800: parse_ipv4;
+            default: accept;
+        }
+    }
+    @name(".parse_ipv4") state parse_ipv4 {
+        packet.extract(hdr.ipv4);
+        transition select(hdr.ipv4.protocol) {
+            8w6: parse_tcp;
+            default: accept;
+        }
+    }
+    @name(".parse_tcp") state parse_tcp {
+        packet.extract(hdr.tcp);
+        transition accept;
+    }
+    @name(".start") state start {
+        transition parse_ethernet;
     }
 }
-header_type ipv4_t {
-    fields {
-        version : 4;
-        ihl : 4;
-        diffserv : 8;
-        totalLen : 16;
-        identification : 16;
-        flags : 3;
-        fragOffset : 13;
-        ttl : 8;
-        protocol : 8;
-        hdrChecksum : 16;
-        srcAddr : 32;
-        dstAddr: 32;
+
+control egress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+    @name(".rewrite_mac") action rewrite_mac(bit<48> smac) {
+        hdr.ethernet.srcAddr = smac;
+    }
+    @name("._drop") action _drop() {
+        mark_to_drop(standard_metadata);
+    }
+    @name(".send_frame") table send_frame {
+        actions = {
+            rewrite_mac;
+            _drop;
+        }
+        key = {
+            standard_metadata.egress_port: exact;
+        }
+        size = 256;
+    }
+    apply {
+        send_frame.apply();
     }
 }
-header_type tcp_t {
-    fields {
-        srcPort : 16;
-        dstPort : 16;
-        seqNo : 32;
-        ackNo : 32;
-        dataOffset : 4;
-        res : 3;
-        ecn : 3;
-        ctrl : 6;
-        window : 16;
-        checksum : 16;
-        urgentPtr : 16;
+
+@name(".flowlet_id") register<bit<16>>(32w8192) flowlet_id;
+
+@name(".flowlet_lasttime") register<bit<32>>(32w8192) flowlet_lasttime;
+
+control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+    @name("._drop") action _drop() {
+        mark_to_drop(standard_metadata);
+    }
+    @name(".set_ecmp_select") action set_ecmp_select(bit<8> ecmp_base, bit<8> ecmp_count) {
+        hash(meta.ingress_metadata.ecmp_offset, HashAlgorithm.crc16, (bit<10>)ecmp_base, { hdr.ipv4.srcAddr, hdr.ipv4.dstAddr, hdr.ipv4.protocol, hdr.tcp.srcPort, hdr.tcp.dstPort, meta.ingress_metadata.flowlet_id }, (bit<20>)ecmp_count);
+    }
+    @name(".set_nhop") action set_nhop(bit<32> nhop_ipv4, bit<9> port) {
+        meta.ingress_metadata.nhop_ipv4 = nhop_ipv4;
+        standard_metadata.egress_spec = port;
+        hdr.ipv4.ttl = hdr.ipv4.ttl - 8w1;
+    }
+    @name(".lookup_flowlet_map") action lookup_flowlet_map() {
+        hash(meta.ingress_metadata.flowlet_map_index, HashAlgorithm.crc16, (bit<13>)0, { hdr.ipv4.srcAddr, hdr.ipv4.dstAddr, hdr.ipv4.protocol, hdr.tcp.srcPort, hdr.tcp.dstPort }, (bit<26>)13);
+        flowlet_id.read(meta.ingress_metadata.flowlet_id, (bit<32>)meta.ingress_metadata.flowlet_map_index);
+        meta.ingress_metadata.flow_ipg = meta.intrinsic_metadata.ingress_global_timestamp;
+        flowlet_lasttime.read(meta.ingress_metadata.flowlet_lasttime, (bit<32>)meta.ingress_metadata.flowlet_map_index);
+        meta.ingress_metadata.flow_ipg = meta.ingress_metadata.flow_ipg - meta.ingress_metadata.flowlet_lasttime;
+        flowlet_lasttime.write((bit<32>)meta.ingress_metadata.flowlet_map_index, (bit<32>)meta.intrinsic_metadata.ingress_global_timestamp);
+    }
+    @name(".set_dmac") action set_dmac(bit<48> dmac) {
+        hdr.ethernet.dstAddr = dmac;
+    }
+    @name(".update_flowlet_id") action update_flowlet_id() {
+        meta.ingress_metadata.flowlet_id = meta.ingress_metadata.flowlet_id + 16w1;
+        flowlet_id.write((bit<32>)meta.ingress_metadata.flowlet_map_index, (bit<16>)meta.ingress_metadata.flowlet_id);
+    }
+    @name(".ecmp_group") table ecmp_group {
+        actions = {
+            _drop;
+            set_ecmp_select;
+        }
+        key = {
+            hdr.ipv4.dstAddr: lpm;
+        }
+        size = 1024;
+    }
+    @name(".ecmp_nhop") table ecmp_nhop {
+        actions = {
+            set_nhop;
+        }
+        key = {
+            meta.ingress_metadata.ecmp_offset: exact;
+        }
+        size = 16384;
+    }
+    @name(".flowlet") table flowlet {
+        actions = {
+            lookup_flowlet_map;
+        }
+    }
+    @name(".forward") table forward {
+        actions = {
+            set_dmac;
+            _drop;
+        }
+        key = {
+            meta.ingress_metadata.nhop_ipv4: exact;
+        }
+        size = 512;
+    }
+    @name(".new_flowlet") table new_flowlet {
+        actions = {
+            update_flowlet_id;
+        }
+    }
+    apply {
+        flowlet.apply();
+        if (meta.ingress_metadata.flow_ipg > 32w50000) {
+            new_flowlet.apply();
+        }
+        ecmp_group.apply();
+        ecmp_nhop.apply();
+        forward.apply();
     }
 }
-parser start {
-    return parse_ethernet;
-}
-header ethernet_t ethernet;
-parser parse_ethernet {
-    extract(ethernet);
-    return select(latest.etherType) {
-        0x0800 : parse_ipv4;
-        default: ingress;
+
+control DeparserImpl(packet_out packet, in headers hdr) {
+    apply {
+        packet.emit(hdr.ethernet);
+        packet.emit(hdr.ipv4);
+        packet.emit(hdr.tcp);
     }
 }
-header ipv4_t ipv4;
-field_list ipv4_checksum_list {
-        ipv4.version;
-        ipv4.ihl;
-        ipv4.diffserv;
-        ipv4.totalLen;
-        ipv4.identification;
-        ipv4.flags;
-        ipv4.fragOffset;
-        ipv4.ttl;
-        ipv4.protocol;
-        ipv4.srcAddr;
-        ipv4.dstAddr;
-}
-field_list_calculation ipv4_checksum {
-    input {
-        ipv4_checksum_list;
-    }
-    algorithm : csum16;
-    output_width : 16;
-}
-calculated_field ipv4.hdrChecksum {
-    verify ipv4_checksum;
-    update ipv4_checksum;
-}
-parser parse_ipv4 {
-    extract(ipv4);
-    return select(latest.protocol) {
-        6 : parse_tcp;
-        default: ingress;
+
+control verifyChecksum(inout headers hdr, inout metadata meta) {
+    apply {
+        verify_checksum(true, { hdr.ipv4.version, hdr.ipv4.ihl, hdr.ipv4.diffserv, hdr.ipv4.totalLen, hdr.ipv4.identification, hdr.ipv4.flags, hdr.ipv4.fragOffset, hdr.ipv4.ttl, hdr.ipv4.protocol, hdr.ipv4.srcAddr, hdr.ipv4.dstAddr }, hdr.ipv4.hdrChecksum, HashAlgorithm.csum16);
     }
 }
-header tcp_t tcp;
-parser parse_tcp {
-    extract(tcp);
-    return ingress;
-}
-header_type intrinsic_metadata_t {
-    fields {
-        deq_timedelta : 32;
-        enq_timestamp : 32;
-        ingress_global_timestamp : 32;
+
+control computeChecksum(inout headers hdr, inout metadata meta) {
+    apply {
+        update_checksum(true, { hdr.ipv4.version, hdr.ipv4.ihl, hdr.ipv4.diffserv, hdr.ipv4.totalLen, hdr.ipv4.identification, hdr.ipv4.flags, hdr.ipv4.fragOffset, hdr.ipv4.ttl, hdr.ipv4.protocol, hdr.ipv4.srcAddr, hdr.ipv4.dstAddr }, hdr.ipv4.hdrChecksum, HashAlgorithm.csum16);
     }
 }
-metadata intrinsic_metadata_t intrinsic_metadata;
-header_type ingress_metadata_t {
-    fields {
-        flow_ipg : 32;
-        flowlet_map_index : 13;
-        flowlet_id : 16;
-        flowlet_lasttime : 32;
-        ecmp_offset : 14;
-        nhop_ipv4 : 32;
-    }
-}
-metadata ingress_metadata_t ingress_metadata;
-action _drop() {
-    drop();
-}
-field_list l3_hash_fields {
-    ipv4.srcAddr;
-    ipv4.dstAddr;
-    ipv4.protocol;
-    tcp.srcPort;
-    tcp.dstPort;
-}
-field_list_calculation flowlet_map_hash {
-    input {
-        l3_hash_fields;
-    }
-    algorithm : crc16;
-    output_width : 13;
-}
-register flowlet_lasttime {
-    width : 32;
-    instance_count : 8192;
-}
-register flowlet_id {
-    width : 16;
-    instance_count : 8192;
-}
-action set_nhop(nhop_ipv4, port) {
-    modify_field(ingress_metadata.nhop_ipv4, nhop_ipv4);
-    modify_field(standard_metadata.egress_spec, port);
-    add_to_field(ipv4.ttl, -1);
-}
-action lookup_flowlet_map() {
-    modify_field_with_hash_based_offset(ingress_metadata.flowlet_map_index, 0,
-                                        flowlet_map_hash, 13);
-    register_read(ingress_metadata.flowlet_id,
-                  flowlet_id, ingress_metadata.flowlet_map_index);
-    modify_field(ingress_metadata.flow_ipg,
-                 intrinsic_metadata.ingress_global_timestamp);
-    register_read(ingress_metadata.flowlet_lasttime,
-    flowlet_lasttime, ingress_metadata.flowlet_map_index);
-    subtract_from_field(ingress_metadata.flow_ipg,
-                        ingress_metadata.flowlet_lasttime);
-    register_write(flowlet_lasttime, ingress_metadata.flowlet_map_index,
-                   intrinsic_metadata.ingress_global_timestamp);
-}
-table flowlet {
-    actions { lookup_flowlet_map; }
-}
-action update_flowlet_id() {
-    add_to_field(ingress_metadata.flowlet_id, 1);
-    register_write(flowlet_id, ingress_metadata.flowlet_map_index,
-                   ingress_metadata.flowlet_id);
-}
-table new_flowlet {
-    actions { update_flowlet_id; }
-}
-field_list flowlet_l3_hash_fields {
-    ipv4.srcAddr;
-    ipv4.dstAddr;
-    ipv4.protocol;
-    tcp.srcPort;
-    tcp.dstPort;
-    ingress_metadata.flowlet_id;
-}
-field_list_calculation flowlet_ecmp_hash {
-    input {
-        flowlet_l3_hash_fields;
-    }
-    algorithm : crc16;
-    output_width : 10;
-}
-action set_ecmp_select(ecmp_base, ecmp_count) {
-    modify_field_with_hash_based_offset(ingress_metadata.ecmp_offset, ecmp_base,
-                                        flowlet_ecmp_hash, ecmp_count);
-}
-table ecmp_group {
-    reads {
-        ipv4.dstAddr : lpm;
-    }
-    actions {
-        _drop;
-        set_ecmp_select;
-    }
-    size : 1024;
-}
-table ecmp_nhop {
-    reads {
-        ingress_metadata.ecmp_offset : exact;
-    }
-    actions {
-        set_nhop;
-    }
-    size : 16384;
-}
-action set_dmac(dmac) {
-    modify_field(ethernet.dstAddr, dmac);
-}
-table forward {
-    reads {
-        ingress_metadata.nhop_ipv4 : exact;
-    }
-    actions {
-        set_dmac;
-        _drop;
-    }
-    size: 512;
-}
-action rewrite_mac(smac) {
-    modify_field(ethernet.srcAddr, smac);
-}
-table send_frame {
-    reads {
-        standard_metadata.egress_port: exact;
-    }
-    actions {
-        rewrite_mac;
-        _drop;
-    }
-    size: 256;
-}
-control ingress {
-    apply(flowlet);
-    if (ingress_metadata.flow_ipg > 50000) {
-        apply(new_flowlet);
-    }
-    apply(ecmp_group);
-    apply(ecmp_nhop);
-    apply(forward);
-}
-control egress {
-    apply(send_frame);
-}
+
+V1Switch(ParserImpl(), verifyChecksum(), ingress(), egress(), computeChecksum(), DeparserImpl()) main;
+
