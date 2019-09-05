@@ -91,7 +91,7 @@ header tcp_t {
 
 struct metadata {
     custom_metadata_t_1        custom_metadata_1;
-    custom_metadata_t        custom_metadata;
+    custom_metadata_t             custom_metadata;
     standard_metadata_t      aux;
     egressSpec_t             port_aux;
 }
@@ -472,6 +472,7 @@ control MyDeparser(packet_out packet, in headers hdr) {
 	packet.emit(hdr.int_header[4]);
 	packet.emit(hdr.int_header[5]);
         packet.emit(hdr.ipv4);
+        packet.emit(hdr.tcp);
     }
 }
 

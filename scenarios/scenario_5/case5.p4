@@ -164,8 +164,6 @@ struct paxos_metadata_t {
     bit<8> ack_acceptors;
 }
 
-
-
 struct metadata {
     custom_metadata_t_1      custom_metadata_1;
     custom_metadata_t        custom_metadata;
