@@ -13,7 +13,7 @@ Top level structure:
    * prime.py: a wrapper that starts Prime and optinally deploy the program on the available P4 target
 
 
-Required Dependencies:
+Required Dependencies to run PRIME:
 
 - [p4c-bm](https://github.com/p4lang/p4c-bm)
 - [bmv2](https://github.com/p4lang/behavioral-model)
