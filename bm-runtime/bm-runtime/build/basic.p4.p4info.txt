@@ -1,0 +1,701 @@
+pkg_info {
+  arch: "v1model"
+}
+tables {
+  preamble {
+    id: 33601811
+    name: "MyIngress.set_heavy_hitter_count_table"
+    alias: "set_heavy_hitter_count_table"
+  }
+  action_refs {
+    id: 16779238
+  }
+  size: 1
+}
+tables {
+  preamble {
+    id: 33583208
+    name: "MyIngress.copy_to_cpu"
+    alias: "copy_to_cpu"
+  }
+  action_refs {
+    id: 16788717
+  }
+  size: 1
+}
+tables {
+  preamble {
+    id: 33558501
+    name: "MyIngress.monitor"
+    alias: "monitor"
+  }
+  action_refs {
+    id: 16805822
+  }
+  size: 1
+}
+tables {
+  preamble {
+    id: 33589632
+    name: "MyIngress.shadow"
+    alias: "shadow"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ipv4.dstAddr"
+    bitwidth: 32
+    match_type: LPM
+  }
+  action_refs {
+    id: 16801127
+  }
+  action_refs {
+    id: 16800567
+    annotations: "@defaultonly"
+    scope: DEFAULT_ONLY
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33574068
+    name: "MyIngress.ipv4_lpm"
+    alias: "ipv4_lpm"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ipv4.dstAddr"
+    bitwidth: 32
+    match_type: LPM
+  }
+  action_refs {
+    id: 16799317
+  }
+  action_refs {
+    id: 16805608
+  }
+  action_refs {
+    id: 16800567
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33607271
+    name: "ecmp_group"
+    alias: "ecmp_group"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ipv4.dstAddr"
+    bitwidth: 32
+    match_type: LPM
+  }
+  action_refs {
+    id: 16784184
+  }
+  action_refs {
+    id: 16839725
+  }
+  action_refs {
+    id: 16800567
+    annotations: "@defaultonly"
+    scope: DEFAULT_ONLY
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33611335
+    name: "ecmp_nhop"
+    alias: "ecmp_nhop"
+  }
+  match_fields {
+    id: 1
+    name: "ingress_metadata.ecmp_offset"
+    bitwidth: 14
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16812204
+  }
+  action_refs {
+    id: 16800567
+    annotations: "@defaultonly"
+    scope: DEFAULT_ONLY
+  }
+  size: 16384
+}
+tables {
+  preamble {
+    id: 33612657
+    name: "flowlet"
+    alias: "flowlet"
+  }
+  action_refs {
+    id: 16804995
+  }
+  action_refs {
+    id: 16800567
+    annotations: "@defaultonly"
+    scope: DEFAULT_ONLY
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33589124
+    name: "forward"
+    alias: "forward"
+  }
+  match_fields {
+    id: 1
+    name: "ingress_metadata.nhop_ipv4"
+    bitwidth: 32
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16780303
+  }
+  action_refs {
+    id: 16784184
+  }
+  action_refs {
+    id: 16800567
+    annotations: "@defaultonly"
+    scope: DEFAULT_ONLY
+  }
+  size: 512
+}
+tables {
+  preamble {
+    id: 33619391
+    name: "new_flowlet"
+    alias: "new_flowlet"
+  }
+  action_refs {
+    id: 16834137
+  }
+  action_refs {
+    id: 16800567
+    annotations: "@defaultonly"
+    scope: DEFAULT_ONLY
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 33562826
+    name: "send_frame"
+    alias: "send_frame"
+  }
+  match_fields {
+    id: 1
+    name: "standard_metadata.egress_port"
+    bitwidth: 9
+    match_type: EXACT
+  }
+  action_refs {
+    id: 16813016
+  }
+  action_refs {
+    id: 16784184
+  }
+  action_refs {
+    id: 16800567
+    annotations: "@defaultonly"
+    scope: DEFAULT_ONLY
+  }
+  size: 256
+}
+tables {
+  preamble {
+    id: 33608327
+    name: "MyEgress.swtrace"
+    alias: "swtrace"
+  }
+  action_refs {
+    id: 16841067
+  }
+  action_refs {
+    id: 16819419
+  }
+  action_refs {
+    id: 16829791
+  }
+  action_refs {
+    id: 16803844
+  }
+  action_refs {
+    id: 16811440
+  }
+  action_refs {
+    id: 16785871
+  }
+  action_refs {
+    id: 16800567
+  }
+  size: 1024
+}
+actions {
+  preamble {
+    id: 16800567
+    name: "NoAction"
+    alias: "NoAction"
+  }
+}
+actions {
+  preamble {
+    id: 16788717
+    name: "MyIngress.do_copy_to_cpu"
+    alias: "do_copy_to_cpu"
+  }
+}
+actions {
+  preamble {
+    id: 16805822
+    name: "MyIngress.watch_ts"
+    alias: "watch_ts"
+  }
+}
+actions {
+  preamble {
+    id: 16779238
+    name: "MyIngress.set_heavy_hitter_count"
+    alias: "set_heavy_hitter_count"
+  }
+}
+actions {
+  preamble {
+    id: 16805608
+    name: "MyIngress.drop"
+    alias: "drop"
+  }
+}
+actions {
+  preamble {
+    id: 16799317
+    name: "MyIngress.ipv4_forward"
+    alias: "ipv4_forward"
+  }
+  params {
+    id: 1
+    name: "dstAddr"
+    bitwidth: 48
+  }
+  params {
+    id: 2
+    name: "port"
+    bitwidth: 9
+  }
+}
+actions {
+  preamble {
+    id: 16801127
+    name: "MyIngress.catalogue"
+    alias: "catalogue"
+  }
+  params {
+    id: 1
+    name: "nf1"
+    bitwidth: 8
+  }
+  params {
+    id: 2
+    name: "nf2"
+    bitwidth: 8
+  }
+  params {
+    id: 3
+    name: "nf3"
+    bitwidth: 8
+  }
+  params {
+    id: 4
+    name: "nf4"
+    bitwidth: 8
+  }
+  params {
+    id: 5
+    name: "ttl_rounds"
+    bitwidth: 32
+  }
+}
+actions {
+  preamble {
+    id: 16784184
+    name: "_drop"
+    alias: "_drop"
+  }
+}
+actions {
+  preamble {
+    id: 16839725
+    name: "set_ecmp_select"
+    alias: "set_ecmp_select"
+  }
+  params {
+    id: 1
+    name: "ecmp_base"
+    bitwidth: 8
+  }
+  params {
+    id: 2
+    name: "ecmp_count"
+    bitwidth: 8
+  }
+}
+actions {
+  preamble {
+    id: 16812204
+    name: "set_nhop"
+    alias: "set_nhop"
+  }
+  params {
+    id: 1
+    name: "nhop_ipv4"
+    bitwidth: 32
+  }
+  params {
+    id: 2
+    name: "port"
+    bitwidth: 9
+  }
+}
+actions {
+  preamble {
+    id: 16804995
+    name: "lookup_flowlet_map"
+    alias: "lookup_flowlet_map"
+  }
+}
+actions {
+  preamble {
+    id: 16780303
+    name: "set_dmac"
+    alias: "set_dmac"
+  }
+  params {
+    id: 1
+    name: "dmac"
+    bitwidth: 48
+  }
+}
+actions {
+  preamble {
+    id: 16834137
+    name: "update_flowlet_id"
+    alias: "update_flowlet_id"
+  }
+}
+actions {
+  preamble {
+    id: 16841067
+    name: "MyEgress.add_swtrace1"
+    alias: "add_swtrace1"
+  }
+  params {
+    id: 1
+    name: "swid"
+    bitwidth: 32
+  }
+}
+actions {
+  preamble {
+    id: 16819419
+    name: "MyEgress.add_swtrace2"
+    alias: "add_swtrace2"
+  }
+  params {
+    id: 1
+    name: "swid"
+    bitwidth: 32
+  }
+}
+actions {
+  preamble {
+    id: 16829791
+    name: "MyEgress.add_swtrace3"
+    alias: "add_swtrace3"
+  }
+  params {
+    id: 1
+    name: "swid"
+    bitwidth: 32
+  }
+}
+actions {
+  preamble {
+    id: 16803844
+    name: "MyEgress.add_swtrace4"
+    alias: "add_swtrace4"
+  }
+  params {
+    id: 1
+    name: "swid"
+    bitwidth: 32
+  }
+}
+actions {
+  preamble {
+    id: 16811440
+    name: "MyEgress.add_swtrace5"
+    alias: "add_swtrace5"
+  }
+  params {
+    id: 1
+    name: "swid"
+    bitwidth: 32
+  }
+}
+actions {
+  preamble {
+    id: 16785871
+    name: "MyEgress.add_swtrace6"
+    alias: "add_swtrace6"
+  }
+  params {
+    id: 1
+    name: "swid"
+    bitwidth: 32
+  }
+}
+actions {
+  preamble {
+    id: 16813016
+    name: "rewrite_mac"
+    alias: "rewrite_mac"
+  }
+  params {
+    id: 1
+    name: "smac"
+    bitwidth: 48
+  }
+}
+registers {
+  preamble {
+    id: 369103659
+    name: "flowlet_id"
+    alias: "flowlet_id"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 16
+      }
+    }
+  }
+  size: 8192
+}
+registers {
+  preamble {
+    id: 369155374
+    name: "flowlet_lasttime"
+    alias: "flowlet_lasttime"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 32
+      }
+    }
+  }
+  size: 8192
+}
+registers {
+  preamble {
+    id: 369105948
+    name: "timestamps_bank"
+    alias: "timestamps_bank"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 64
+      }
+    }
+  }
+  size: 1
+}
+registers {
+  preamble {
+    id: 369123615
+    name: "packet_count"
+    alias: "packet_count"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 64
+      }
+    }
+  }
+  size: 1
+}
+registers {
+  preamble {
+    id: 369145982
+    name: "MyIngress.heavy_hitter_counter1"
+    alias: "heavy_hitter_counter1"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 16
+      }
+    }
+  }
+  size: 16
+}
+registers {
+  preamble {
+    id: 369106325
+    name: "MyIngress.heavy_hitter_counter2"
+    alias: "heavy_hitter_counter2"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 16
+      }
+    }
+  }
+  size: 16
+}
+registers {
+  preamble {
+    id: 369114481
+    name: "MyIngress.smalltresh"
+    alias: "smalltresh"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 16
+      }
+    }
+  }
+  size: 1
+}
+registers {
+  preamble {
+    id: 369116714
+    name: "MyIngress.tresh"
+    alias: "tresh"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 16
+      }
+    }
+  }
+  size: 1
+}
+registers {
+  preamble {
+    id: 369100211
+    name: "MyIngress.ts"
+    alias: "ts"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 64
+      }
+    }
+  }
+  size: 1024
+}
+registers {
+  preamble {
+    id: 369153178
+    name: "MyIngress.ts_sender"
+    alias: "ts_sender"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 64
+      }
+    }
+  }
+  size: 256
+}
+registers {
+  preamble {
+    id: 369133934
+    name: "MyIngress.ts_recver"
+    alias: "ts_recver"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 64
+      }
+    }
+  }
+  size: 256
+}
+registers {
+  preamble {
+    id: 369153718
+    name: "MyIngress.ts_valid"
+    alias: "ts_valid"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 1
+      }
+    }
+  }
+  size: 256
+}
+registers {
+  preamble {
+    id: 369119458
+    name: "MyIngress.Whois"
+    alias: "Whois"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 32
+      }
+    }
+  }
+  size: 16
+}
+registers {
+  preamble {
+    id: 369162319
+    name: "MyIngress.flowMax"
+    alias: "flowMax"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 16
+      }
+    }
+  }
+  size: 16
+}
+registers {
+  preamble {
+    id: 369156731
+    name: "MyIngress.flowMin"
+    alias: "flowMin"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 16
+      }
+    }
+  }
+  size: 16
+}
+type_info {
+}
