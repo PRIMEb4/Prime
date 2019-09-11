@@ -44,9 +44,11 @@ header ipv4_t {
 }
 
 struct metadata {
-    custom_metadata_t       custom_metadata;
-    standard_metadata_t    aux;
-    egressSpec_t                 port_aux;
+    custom_metadata_t                                    custom_metadata;
+    standard_metadata_t   			      aux;
+    egressSpec_t               				     port_aux;
+    bit<64>                                                                aux_ingress_metadata;
+    bit<64>                                                                aux_swap;
 }
 
 struct headers {
@@ -89,6 +91,9 @@ control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
     apply {  }
 }
 
+/************ registers for Whippersnapper evaluation ***********************/
+register<bit<64>>(1) timestamps_bank;
+register<bit<64>>(1) packet_count;
 
 /*************************************************************************
 **************  I N G R E S S   P R O C E S S I N G   *******************
@@ -157,6 +162,9 @@ control MyIngress(inout headers hdr,
     	if (meta.custom_metadata.rounds == 0){
     	    shadow.apply();
             meta.custom_metadata.next_function = meta.custom_metadata.nf_01_id;
+            meta.aux_ingress_metadata = (    bit<64>    ) standard_metadata.ingress_global_timestamp;
+            packet_count.read(meta.aux_swap,0);
+	    packet_count.write(0, meta.aux_swap + 1);
     	}
 
 	  //if the next function to be processed is the function with ID=1
@@ -182,18 +190,24 @@ control MyEgress(inout headers hdr,
                  inout standard_metadata_t standard_metadata) {
     
    apply {
-	   //set next function
-        if(meta.custom_metadata.rounds < meta.custom_metadata.total_rounds){
-            meta.custom_metadata.rounds = meta.custom_metadata.rounds + 1;
-            if(meta.custom_metadata.rounds == 1)
-                meta.custom_metadata.next_function = meta.custom_metadata.nf_01_id;
-            else if(meta.custom_metadata.rounds == 2)
-                    meta.custom_metadata.next_function = meta.custom_metadata.nf_02_id;
+	        //set next function
+	        if(meta.custom_metadata.rounds < meta.custom_metadata.total_rounds){
+	            meta.custom_metadata.rounds = meta.custom_metadata.rounds + 1;
+	            if(meta.custom_metadata.rounds == 1)
+	                meta.custom_metadata.next_function = meta.custom_metadata.nf_01_id;
+	            else if(meta.custom_metadata.rounds == 2)
+	                    meta.custom_metadata.next_function = meta.custom_metadata.nf_02_id;
            
  		//-------- DO IT FOR N FUNCTIONS
-	    meta.port_aux = standard_metadata.egress_spec;
-    	    recirculate(meta);
-	    }
+	        meta.port_aux = standard_metadata.egress_spec;
+    	        recirculate(meta);
+
+	    }else{
+                //stores packet processing times
+
+                timestamps_bank.read(meta.aux_swap,0);
+		timestamps_bank.write(0, meta.aux_swap + (   ( bit<64>  )  standard_metadata.egress_global_timestamp - 	meta.aux_ingress_metadata));
+        }
     }
 }
 

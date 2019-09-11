@@ -2,22 +2,32 @@
 #include <core.p4>
 #include <v1model.p4>
 
+<<<<<<< HEAD
 const bit<16> TYPE_IPV4 = 0x800;
+=======
+typedef bit<9>  egressSpec_t;
+typedef bit<48> macAddr_t;
+typedef bit<32> ip4Addr_t;
+>>>>>>> e50cf33d5a2f0743e361911bb61f7a0f3f1e12b0
 
 /*************************************************************************
 *********************** H E A D E R S  ***********************************
 *************************************************************************/
 
+<<<<<<< HEAD
 typedef bit<9>  egressSpec_t;
 typedef bit<48> macAddr_t;
 typedef bit<32> ip4Addr_t;
 
+=======
+>>>>>>> e50cf33d5a2f0743e361911bb61f7a0f3f1e12b0
 header ethernet_t {
     macAddr_t dstAddr;
     macAddr_t srcAddr;
     bit<16>   etherType;
 }
 
+<<<<<<< HEAD
 header ipv4_t {
     bit<4>    version;
     bit<4>    ihl;
@@ -35,11 +45,17 @@ header ipv4_t {
 
 struct metadata {
     /* empty */
+=======
+struct metadata {
+>>>>>>> e50cf33d5a2f0743e361911bb61f7a0f3f1e12b0
 }
 
 struct headers {
     ethernet_t   ethernet;
+<<<<<<< HEAD
     ipv4_t       ipv4;
+=======
+>>>>>>> e50cf33d5a2f0743e361911bb61f7a0f3f1e12b0
 }
 
 /*************************************************************************
@@ -57,6 +73,7 @@ parser MyParser(packet_in packet,
 
     state parse_ethernet {
         packet.extract(hdr.ethernet);
+<<<<<<< HEAD
         transition select(hdr.ethernet.etherType) {
             TYPE_IPV4: parse_ipv4;
             default: accept;
@@ -68,6 +85,10 @@ parser MyParser(packet_in packet,
         transition accept;
     }
 
+=======
+        transition accept;
+    }
+>>>>>>> e50cf33d5a2f0743e361911bb61f7a0f3f1e12b0
 }
 
 /*************************************************************************
@@ -86,6 +107,7 @@ control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
 control MyIngress(inout headers hdr,
                   inout metadata meta,
                   inout standard_metadata_t standard_metadata) {
+<<<<<<< HEAD
     action drop() {
         mark_to_drop(standard_metadata);
     }
@@ -114,6 +136,33 @@ control MyIngress(inout headers hdr,
         if (hdr.ipv4.isValid()) {
             ipv4_lpm.apply();
         }
+=======
+
+    action drop() {
+        mark_to_drop();
+    }
+
+    action simple_forward(egressSpec_t port){
+        standard_metadata.egress_spec = port;
+    }
+
+
+    table eth_exact{
+        key = {
+            hdr.ethernet.srcAddr:exact;
+        }
+        actions={
+             simple_forward();
+             NoAction;
+             drop;
+        }
+        size = 1024;
+        default_action = NoAction();
+    }
+
+    apply {
+	   eth_exact.apply();
+>>>>>>> e50cf33d5a2f0743e361911bb61f7a0f3f1e12b0
     }
 }
 
@@ -130,6 +179,7 @@ control MyEgress(inout headers hdr,
 /*************************************************************************
 *************   C H E C K S U M    C O M P U T A T I O N   **************
 *************************************************************************/
+<<<<<<< HEAD
 
 control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
      apply {
@@ -151,6 +201,13 @@ control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
     }
 }
 
+=======
+control MyComputeChecksum(inout headers hdr, inout metadata meta) {
+    apply {   }
+}
+
+
+>>>>>>> e50cf33d5a2f0743e361911bb61f7a0f3f1e12b0
 /*************************************************************************
 ***********************  D E P A R S E R  *******************************
 *************************************************************************/
@@ -158,7 +215,10 @@ control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
 control MyDeparser(packet_out packet, in headers hdr) {
     apply {
         packet.emit(hdr.ethernet);
+<<<<<<< HEAD
         packet.emit(hdr.ipv4);
+=======
+>>>>>>> e50cf33d5a2f0743e361911bb61f7a0f3f1e12b0
     }
 }
 
