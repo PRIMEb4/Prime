@@ -43,11 +43,11 @@
       },
       "action_name": "MyIngress.catalogue",
       "action_params": {
-        "nf1": 1,
+        "nf1": 2,
         "nf2": 3,
         "nf3": 4,
        "nf4": 5,
-       "nf5":2,
+       "nf5":1,
         "ttl_rounds" : 5
       }
     },
@@ -58,11 +58,11 @@
       },
       "action_name": "MyIngress.catalogue",
       "action_params": {
-        "nf1": 1,
+        "nf1": 2,
         "nf2": 3,
         "nf3": 4,
        "nf4": 5,
-       "nf5": 2,
+       "nf5": 1,
         "ttl_rounds" : 5
       }
     }
